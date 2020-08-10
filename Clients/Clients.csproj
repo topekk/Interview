@@ -1,7 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\InterviewProject\InterviewProject.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="generated\" />
+  </ItemGroup>
+
+
+  <Target Name="NSwag" BeforeTargets="Build">
+    <!--<Copy SourceFiles="@(ReferencePath)" DestinationFolder="$(ProjectDir)References" />
+
+    <Exec Command="$(NSwagExe_Core31) aspnetcore2openapi /assembly:$(ProjectDir)References/InterviewProject.dll /output:$(ProjectDir)References/swagger.json" />
+
+    <Exec Command="$(NSwagExe_Core31) openapi2csclient /input:$(ProjectDir)References/swagger.json /namespace:InterviewProject.Client /output:$(ProjectDir)generated/InterviewClient.cs /wrapResponses:true" />-->
+
+    <!--<RemoveDir Directories="$(ProjectDir)References" />-->
+  </Target>  
+  
 </Project>

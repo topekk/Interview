@@ -27,6 +27,17 @@ namespace InterviewProject
         {
             services.AddControllers();
             var ts = InterviewProject.MyBaseController.Uptime;
+
+            var databaseClientConfiguration = new DatabaseClientConfiguration();
+            this.Configuration.Bind("DatabaseClient", databaseClientConfiguration);
+
+            services.AddSingleton(databaseClientConfiguration);
+
+
+            services.AddSingleton(typeof(WeatherClient));
+
+
+
             //services.AddSingleton(typeof(IModelParser), typeof(ModelParser));
 
         }

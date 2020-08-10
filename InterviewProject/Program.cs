@@ -28,6 +28,11 @@ namespace InterviewProject
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConsole();
+                })
              .ConfigureServices(services =>
              {
                  services.AddSwaggerGen(c =>
@@ -51,6 +56,7 @@ namespace InterviewProject
                                              Url = new Uri("https://example.com/license"),
                                          }
                                      });
+                     c.OperationFilter<MyHeaderFilter>();
                  });
                  services.AddSwaggerDocument();
 

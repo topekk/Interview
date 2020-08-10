@@ -7,33 +7,41 @@ using Microsoft.Extensions.Logging;
 
 namespace InterviewProject
 {
+    
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : MyBaseController
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private WeatherClient weatherClient;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger) :base(logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, WeatherClient client) :base(logger)
         {
             _logger = logger;
+            weatherClient = client;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            var items = await this.weatherClient.GetForecasts(DateTime.Now.Year, DateTime.Now.Month);
+            return items;
+        }
+
+        [ApiKeyAuth]
+        [HttpGet("reset")]
+        public async Task Reset()
+        {
+            await this.weatherClient.Reset();
+        }
+
+        [ApiKeyAuth]
+        [HttpPost("generateForecasts")]
+        public async Task GenerateForecasts([FromBody] WeatherForecastGenerationRequest request)
+        {
+            await this.weatherClient.GenerateForecast(request);
         }
     }
 }
